@@ -165,6 +165,51 @@ class ConnectFour:
 
         return False
 
+    def userMove(self, user_name: str, val: str):
+        breakout = False
+
+        while not breakout:
+            col_no = input(f"{user_name} make move with {val}, give a column number.\n")
+
+            if not col_no:
+                print(f"{user_name} provide input!")
+                continue
+
+            if not col_no.isdigit():
+                print(f"{user_name} provided invalid input, provide a integer")
+                continue
+
+            if int(col_no) not in range(7):
+                print(f"Out of bounds! Choose a column between 0 and 6.")
+                continue
+
+            row_index = self.gravity(int(col_no), val)
+
+            if row_index == -1:
+                print(f"{user_name} provide another input, column is full!")
+                continue
+
+            self.printBoard()
+            breakout = True
+
+        return col_no, row_index
+
+    def userInterface(self):
+        moves = 0
+        while True:
+            moves +=1
+            col_index, row_index = self.userMove("User 1", "o")
+            if self.checkWinOptimize('o', int(col_index), row_index):
+                print("User 1 has won!")
+                return
+            col_index, row_index = self.userMove("User 2", "x")
+            if self.checkWinOptimize('x', int(col_index), row_index):
+                print("User 2 has won!")
+                return
+            if moves >= 21:
+                print(f"Its a Draw!.")
+                return
+
 
 def main():
     """Main function to run the Connect Four game practice."""
@@ -172,16 +217,7 @@ def main():
     print("Welcome to Connect Four!")
     game.printBoard()
 
-    game.gravity(3, 'o')
-    game.gravity(2, 'o')
-    game.gravity(2, 'o')
-    game.gravity(2, 'o')
-    game.gravity(1, 'o')
-    game.gravity(1, 'o')
-    row_index = game.gravity(0, 'o')
-    print(f"row_index = {row_index}\n")
-    game.printBoard()
-    print(f"{game.checkWinOptimize('o', 2, row_index)}\n")
+    game.userInterface()
 
 
 if __name__ == "__main__":
