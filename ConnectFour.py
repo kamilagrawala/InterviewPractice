@@ -18,6 +18,16 @@ class ConnectFour:
     def getBoard(self):
         return self.board
 
+    def helperCount(self, val, col_index, col_step, row_index, row_step):
+        count = 0
+        col_index += col_step
+        row_index += row_step
+        while 0 <= col_index <= 6  and 0 <= row_index <= 5 and count < 4 and self.board[col_index][row_index] == val:
+            col_index += col_step
+            row_index += row_step
+            count += 1
+        return count
+
     def gravity(self, col_number, val):
         target_column = self.board[col_number]
         for row_index in range(5, -1, -1):
@@ -28,6 +38,45 @@ class ConnectFour:
                 return row_index
         # Nothing Empty!
         return -1
+
+    def checkWinOptimize(self, val, col_index, row_index):
+        # Horizontal Direction check
+        print("Horizontal check going right (optimized)")
+        right_count = self.helperCount(val, col_index, 1, row_index, 0)
+        print("Horizontal check going left (optimized)")
+        left_count = self.helperCount(val, col_index, -1, row_index, 0)
+
+        if right_count + left_count + 1 >= 4:
+            return True
+
+        # Vertical Direction Check
+        print("Vertical Check going up")
+        up_count = self.helperCount(val, col_index, 0, row_index, -1)
+        print("Vertical Check going down")
+        down_count = self.helperCount(val, col_index, 0, row_index, 1)
+
+        if up_count + down_count + 1 >= 4:
+            return True
+
+        # Positive Axis
+        print("Check diagonal up and right")
+        up_and_right = self.helperCount(val, col_index, 1, row_index, -1)
+        print("Check diagonal down and left")
+        down_and_left = self.helperCount(val, col_index, -1, row_index, 1)
+
+        if up_and_right + down_and_left + 1 >= 4:
+            return True
+
+        # Negative Axis
+        print("Check diagonal down and right")
+        down_and_right = self.helperCount(val, col_index, 1, row_index, 1)
+        print("Check diagonal up and left")
+        up_and_left = self.helperCount(val, col_index, -1, row_index, -1)
+
+        if down_and_right + up_and_left + 1 >= 4:
+            return True
+
+        return False
 
     def checkWin(self, val, col_index, row_index):
         # Horizontal Check going right
@@ -132,7 +181,7 @@ def main():
     row_index = game.gravity(0, 'o')
     print(f"row_index = {row_index}\n")
     game.printBoard()
-    print(f"{game.checkWin('o', 2, row_index)}\n")
+    print(f"{game.checkWinOptimize('o', 2, row_index)}\n")
 
 
 if __name__ == "__main__":
