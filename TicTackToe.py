@@ -13,7 +13,7 @@ def main():
 
 def createBoard():
     # Board is 3X3
-    board = [['.' for i in range(3)] for j in range(3)]
+    board = [['.' for row in range(3)] for col in range(3)]
     return board
 
 def checkBoard(board, x, y):

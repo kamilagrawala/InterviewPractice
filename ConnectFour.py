@@ -1,5 +1,5 @@
 class ConnectFour:
-    def __init__(self, rows=6, cols=7):
+    def __init__(self):
         """Initializes the Connect Four board."""
         self.board = [['.' for row in range(6)] for col in range(7)]
 
@@ -31,10 +31,10 @@ class ConnectFour:
     def gravity(self, col_number, val):
         target_column = self.board[col_number]
         for row_index in range(5, -1, -1):
-            # 4. As we go up, is this spot empty?
+            # As we go up, is this spot empty?
             if target_column[row_index] == '.':
                 target_column[row_index] = val
-                # 5. Yes! It fell to this row. Return the row number.
+                #  It fell to this row. Return the row number.
                 return row_index
         # Nothing Empty!
         return -1
@@ -216,7 +216,6 @@ def main():
     game = ConnectFour()
     print("Welcome to Connect Four!")
     game.printBoard()
-
     game.userInterface()
 
 
